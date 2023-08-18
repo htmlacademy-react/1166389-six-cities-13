@@ -1,11 +1,12 @@
-import CitiesCard from '../../components/cities-card/cities-card';
 import Header from '../../components/header/header';
+import { OfferCard } from '../../mocks/offers';
+import CitiesList from '../../components/cities-list/cities-list';
 
 type MainProps = {
-  offersAmount: number;
+  offers: OfferCard[];
 }
 
-function Main({ offersAmount }: MainProps): JSX.Element {
+function Main({ offers }: MainProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <Header />
@@ -69,11 +70,7 @@ function Main({ offersAmount }: MainProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-
-                {Array.from(Array(offersAmount).keys()).map((number) => (
-                  <CitiesCard key={number} width="80%" />
-                ))}
-
+                <CitiesList offers={offers} />
               </div>
             </section>
             <div className="cities__right-section">
