@@ -1,21 +1,25 @@
+export type PlaceLocation = {
+  latitude: number;
+  longitude: number;
+  zoom: number;
+}
+
+export type CityLocation = {
+  name: string;
+  location: {
+    latitude: number;
+    longitude: number;
+    zoom: number;
+  };
+}
+
 export type OfferCard = {
     id: string;
     title: string;
     type: string;
     price: number;
-    city: {
-      name: string;
-      location: {
-        latitude: number;
-        longitude: number;
-        zoom: number;
-      };
-    };
-    location: {
-      latitude: number;
-      longitude: number;
-      zoom: number;
-    };
+    city: CityLocation;
+    location: PlaceLocation;
     isFavorite: boolean;
     isPremium: boolean;
     rating: number;
@@ -29,17 +33,17 @@ export const mockOffers: OfferCard[] = [
     type: 'apartment',
     price: 1,
     city: {
-      name: 'Kiev',
+      name: 'Amsterdam',
       location: {
-        latitude:  50.449635,
-        longitude: 30.531219,
-        zoom: 8,
+        latitude: 52.377956,
+        longitude: 4.897070,
+        zoom: 11,
       },
     },
     location: {
-      latitude: 50.420635,
-      longitude: 30.321219,
-      zoom: 8,
+      latitude: 52.3909553943508,
+      longitude: 4.85309666406198,
+      zoom: 13,
     },
     isFavorite: true,
     isPremium: false,
@@ -52,17 +56,17 @@ export const mockOffers: OfferCard[] = [
     type: 'apartment',
     price: 10,
     city: {
-      name: 'Brussels',
+      name: 'Amsterdam',
       location: {
-        latitude: 97.420136,
-        longitude: 8.420338,
-        zoom: 8,
+        latitude: 52.377956,
+        longitude: 4.897070,
+        zoom: 11,
       },
     },
     location: {
-      latitude: 36.420232,
-      longitude: 3.420431,
-      zoom: 8,
+      latitude: 52.3609553943508,
+      longitude: 4.85309666406198,
+      zoom: 13,
     },
     isFavorite: true,
     isPremium: true,
@@ -75,17 +79,17 @@ export const mockOffers: OfferCard[] = [
     type: 'apartment',
     price: 100,
     city: {
-      name: 'somewhere',
+      name: 'Amsterdam',
       location: {
-        latitude: 51.766547,
-        longitude: 6.699999,
-        zoom: 8,
+        latitude: 52.377956,
+        longitude: 4.897070,
+        zoom: 11,
       },
     },
     location: {
-      latitude: 48.123785,
-      longitude: 2.123751,
-      zoom: 8,
+      latitude: 52.3909553943508,
+      longitude: 4.929309666406198,
+      zoom: 13,
     },
     isFavorite: true,
     isPremium: false,
@@ -98,17 +102,17 @@ export const mockOffers: OfferCard[] = [
     type: 'apartment',
     price: 300,
     city: {
-      name: 'Moscow',
+      name: 'Amsterdam',
       location: {
-        latitude: 55.751244,
-        longitude: 37.618423,
-        zoom: 8,
+        latitude: 52.377956,
+        longitude: 4.897070,
+        zoom: 11,
       },
     },
     location: {
-      latitude: 56.35514938496378,
-      longitude: 6.673877537499948,
-      zoom: 8,
+      latitude: 52.3809553943508,
+      longitude: 4.939309666406198,
+      zoom: 13,
     },
     isFavorite: false,
     isPremium: true,
