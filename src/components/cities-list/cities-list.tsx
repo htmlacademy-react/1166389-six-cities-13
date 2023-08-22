@@ -1,17 +1,13 @@
-import { useState } from 'react';
 import { OfferCard } from '../../mocks/offers';
 import CitiesCard from '../cities-card/cities-card';
 
 type CitiesListProps = {
   offers: OfferCard[];
+  onListCardHover: (offer: OfferCard) => void;
+  onListCardMouseOut: () => void;
 }
 
-function CitiesList({offers}: CitiesListProps): JSX.Element {
-  const [, setActiveCard] = useState<OfferCard | null>(null);
-
-  const handleMouseOver = (offer: OfferCard) => {
-    setActiveCard(offer);
-  };
+function CitiesList({offers, onListCardHover, onListCardMouseOut}: CitiesListProps): JSX.Element {
 
   return (
     <>
@@ -21,7 +17,8 @@ function CitiesList({offers}: CitiesListProps): JSX.Element {
             <CitiesCard
               key={offer.id}
               offer={offer}
-              onMouseOver={() => handleMouseOver(offer)}
+              onListCardHover={() => onListCardHover(offer)}
+              onListCardMouseOut={() => onListCardMouseOut()}
             />
           )
       )};

@@ -1,12 +1,24 @@
 import Header from '../../components/header/header';
+import Map from '../../components/map/map';
 import { OfferCard } from '../../mocks/offers';
 import CitiesList from '../../components/cities-list/cities-list';
+import { useState } from 'react';
 
 type MainProps = {
   offers: OfferCard[];
 }
 
 function Main({ offers }: MainProps): JSX.Element {
+  const [selectedCard, setActiveCard] = useState<OfferCard | null>(null);
+
+  const handleListCardHover = (offer: OfferCard) => {
+    setActiveCard(offer);
+  };
+
+  const handleListCardMouseOut = () => {
+    setActiveCard(null);
+  };
+
   return (
     <div className="page page--gray page--main">
       <Header />
@@ -70,11 +82,13 @@ function Main({ offers }: MainProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <CitiesList offers={offers} />
+                <CitiesList offers={offers} onListCardHover={handleListCardHover} onListCardMouseOut={handleListCardMouseOut}/>
               </div>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <Map offers={offers} city={offers[0].city} selectedPlace={selectedCard}/>
+              </section>
             </div>
           </div>
         </div>

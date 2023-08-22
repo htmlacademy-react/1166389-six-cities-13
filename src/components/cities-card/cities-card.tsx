@@ -3,10 +3,11 @@ import {Link} from 'react-router-dom';
 
 type CitiesCardProps = {
   offer: OfferCard;
-  onMouseOver: () => void;
+  onListCardHover: (offer: OfferCard) => void;
+  onListCardMouseOut: () => void;
 }
 
-function CitiesCard({offer, onMouseOver}: CitiesCardProps): JSX.Element {
+function CitiesCard({offer, onListCardHover, onListCardMouseOut}: CitiesCardProps): JSX.Element {
   const { id, title, type, price, rating, previewImage } = offer;
 
   const setRating = (cardRating: number) => {
@@ -29,7 +30,7 @@ function CitiesCard({offer, onMouseOver}: CitiesCardProps): JSX.Element {
   };
 
   return (
-    <article className="cities__card place-card" onMouseOver={onMouseOver}>
+    <article className="cities__card place-card" onMouseOver={() => onListCardHover(offer)} onMouseOut={() => onListCardMouseOut()}>
       <div className="place-card__mark">
         <span>Premium</span>
       </div>
