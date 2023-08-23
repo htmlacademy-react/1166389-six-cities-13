@@ -9,12 +9,14 @@ import Offer from '../../pages/offer/offer';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import PrivateRoute from '../private-route/private-route';
 import { OfferCard } from '../../mocks/offers';
+import { OfferReview } from '../../mocks/reviews';
 
 type AppProps = {
   offers: OfferCard[];
+  reviews: OfferReview[];
 }
 
-function App({offers}: AppProps) {
+function App({offers, reviews}: AppProps) {
   return (
     <Router>
       <Routes>
@@ -36,7 +38,9 @@ function App({offers}: AppProps) {
         />
         <Route
           path={AppRoute.Offer}
-          element={<Offer />}
+          element={
+            <Offer offers={offers} reviews={reviews} />
+          }
         />
         <Route
           path={AppRoute.Error}

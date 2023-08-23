@@ -1,41 +1,23 @@
 import { OfferCard } from '../../mocks/offers';
 import {Link} from 'react-router-dom';
+import { setRating } from '../../utils';
 
 type CitiesCardProps = {
   offer: OfferCard;
-  onListCardHover: (offer: OfferCard) => void;
-  onListCardMouseOut: () => void;
+  onListCardHover?: (offer: OfferCard) => void;
+  onListCardMouseOut?: () => void;
 }
 
 function CitiesCard({offer, onListCardHover, onListCardMouseOut}: CitiesCardProps): JSX.Element {
   const { id, title, type, price, rating, previewImage } = offer;
 
-  const setRating = (cardRating: number) => {
-    switch (true) {
-      case cardRating === 0:
-        return '0%';
-      case cardRating === 1:
-        return '20%';
-      case cardRating === 2:
-        return '40%';
-      case cardRating === 3:
-        return '60%';
-      case cardRating === 4:
-        return '80%';
-      case cardRating === 5:
-        return '100%';
-      default:
-        return '0%';
-    }
-  };
-
   return (
-    <article className="cities__card place-card" onMouseOver={() => onListCardHover(offer)} onMouseOut={() => onListCardMouseOut()}>
+    <article className="cities__card place-card" onMouseOver={onListCardHover ? () => onListCardHover(offer) : undefined} onMouseOut={onListCardMouseOut ? () => onListCardMouseOut() : undefined}>
       <div className="place-card__mark">
         <span>Premium</span>
       </div>
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`offer/${id}`}>
+        <Link to={{ pathname: `/offer/${id}` }}>
           <img className="place-card__image" src={ previewImage } width="260" height="200" alt="Place image" />
         </Link>
       </div>
@@ -59,7 +41,7 @@ function CitiesCard({offer, onListCardHover, onListCardMouseOut}: CitiesCardProp
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`offer/${id}`}>{title}</Link>
+          <Link to={{ pathname: `/offer/${id}` }}>{title}</Link>
         </h2>
         <p className="place-card__type">{ type }</p>
       </div>
