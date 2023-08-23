@@ -3,22 +3,28 @@ import CitiesCard from '../cities-card/cities-card';
 
 type CitiesListProps = {
   offers: OfferCard[];
-  onListCardHover: (offer: OfferCard) => void;
-  onListCardMouseOut: () => void;
+  selectedPlace?: OfferCard;
+  onListCardHover?: (offer: OfferCard) => void;
+  onListCardMouseOut?: () => void;
 }
 
-function CitiesList({offers, onListCardHover, onListCardMouseOut}: CitiesListProps): JSX.Element {
+function CitiesList({offers, onListCardHover, onListCardMouseOut, selectedPlace}: CitiesListProps): JSX.Element {
+  let nearPlaces: OfferCard[] = [];
+
+  if (selectedPlace) {
+    nearPlaces = offers.filter((offer) => offer.id !== selectedPlace.id);
+  }
 
   return (
     <>
-      {offers.map(
+      {(selectedPlace ? nearPlaces : offers).map(
         (offer) =>
           (
             <CitiesCard
               key={offer.id}
               offer={offer}
-              onListCardHover={() => onListCardHover(offer)}
-              onListCardMouseOut={() => onListCardMouseOut()}
+              onListCardHover={onListCardHover ? () => onListCardHover(offer) : undefined}
+              onListCardMouseOut={onListCardMouseOut ? () => onListCardMouseOut() : undefined}
             />
           )
       )};

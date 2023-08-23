@@ -9,6 +9,7 @@ type MapProps = {
   offers: OfferCard[];
   city: CityLocation;
   selectedPlace: OfferCard | null;
+  isOfferPage?: boolean;
 };
 
 const defaultCustomIcon = new Icon({
@@ -24,7 +25,12 @@ const currentCustomIcon = new Icon({
 });
 
 function Map(props: MapProps): JSX.Element {
-  const {city, selectedPlace, offers} = props;
+  const {city, selectedPlace, offers, isOfferPage} = props;
+
+  const getMapStyle = () =>
+    isOfferPage
+      ? {height: '100%', width: '1150px', margin: '0 auto'}
+      : {height: '100%'};
 
   const mapRef = useRef(null);
   const map = useMap({mapRef, city});
@@ -53,7 +59,7 @@ function Map(props: MapProps): JSX.Element {
     }
   }, [map, offers, selectedPlace]);
 
-  return <div style={{height: '100%'}} ref={mapRef}></div>;
+  return <div style={getMapStyle()} ref={mapRef}></div>;
 }
 
 export default Map;
