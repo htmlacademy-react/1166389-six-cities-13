@@ -2,13 +2,13 @@ import { OfferCard } from '../../mocks/offers';
 import {Link} from 'react-router-dom';
 import { setRating } from '../../utils';
 
-type CitiesCardProps = {
+type PlacesCardProps = {
   offer: OfferCard;
   onListCardHover?: (offer: OfferCard) => void;
   onListCardMouseOut?: () => void;
 }
 
-function CitiesCard({offer, onListCardHover, onListCardMouseOut}: CitiesCardProps): JSX.Element {
+function PlacesCard({offer, onListCardHover, onListCardMouseOut}: PlacesCardProps): JSX.Element {
   const { id, title, type, price, rating, previewImage } = offer;
 
   return (
@@ -49,4 +49,4 @@ function CitiesCard({offer, onListCardHover, onListCardMouseOut}: CitiesCardProp
   );
 }
 
-export default CitiesCard;
+export default PlacesCard;

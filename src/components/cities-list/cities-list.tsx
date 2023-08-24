@@ -1,34 +1,18 @@
-import { OfferCard } from '../../mocks/offers';
-import CitiesCard from '../cities-card/cities-card';
+import CitiesItem from '../locations-item/locations-item';
+import { CITIES } from '../../const/const';
 
-type CitiesListProps = {
-  offers: OfferCard[];
-  selectedPlace?: OfferCard;
-  onListCardHover?: (offer: OfferCard) => void;
-  onListCardMouseOut?: () => void;
-}
-
-function CitiesList({offers, onListCardHover, onListCardMouseOut, selectedPlace}: CitiesListProps): JSX.Element {
-  let nearPlaces: OfferCard[] = [];
-
-  if (selectedPlace) {
-    nearPlaces = offers.filter((offer) => offer.id !== selectedPlace.id);
-  }
-
+function CitiesList(): JSX.Element{
   return (
-    <>
-      {(selectedPlace ? nearPlaces : offers).map(
-        (offer) =>
-          (
-            <CitiesCard
-              key={offer.id}
-              offer={offer}
-              onListCardHover={onListCardHover ? () => onListCardHover(offer) : undefined}
-              onListCardMouseOut={onListCardMouseOut ? () => onListCardMouseOut() : undefined}
-            />
-          )
-      )};
-    </>
+    <section className="locations container">
+      <ul className="locations__list tabs__list">
+        {CITIES.map(
+          (city) =>
+            (
+              <CitiesItem key={city} city={city}/>
+            )
+        )};
+      </ul>
+    </section>
   );
 }
 

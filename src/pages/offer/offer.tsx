@@ -6,7 +6,7 @@ import ErrorPage from '../../pages/error/error';
 import { OfferCard } from '../../mocks/offers';
 import { OfferReview } from '../../mocks/reviews';
 import { useParams } from 'react-router-dom';
-import CitiesList from '../../components/cities-list/cities-list';
+import CitiesList from '../../components/places-list/places-list';
 
 
 type OfferLoggedProps = {
