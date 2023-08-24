@@ -6,7 +6,7 @@ import Error from '../../pages/error/error';
 import Favorites from '../../pages/favorites/favorites';
 import Login from '../../pages/login/login';
 import Offer from '../../pages/offer/offer';
-import {AppRoute, AuthorizationStatus} from '../../const';
+import {AppRoute, AuthorizationStatus} from '../../const/const';
 import PrivateRoute from '../private-route/private-route';
 import { OfferCard } from '../../mocks/offers';
 import { OfferReview } from '../../mocks/reviews';
