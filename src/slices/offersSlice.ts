@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { OfferCard } from '../mocks/offers';
+import { OfferCard, mockOffers } from '../mocks/offers';
 
 export type InitialStateType = {
   city: string;
@@ -8,7 +8,7 @@ export type InitialStateType = {
 
 const initialState: InitialStateType = {
   city: 'Paris',
-  offers: [] as OfferCard[],
+  offers: mockOffers,
 };
 
 const offersSlice = createSlice({
@@ -18,12 +18,15 @@ const offersSlice = createSlice({
     changeCity: (state, action: PayloadAction<string>) => {
       state.city = action.payload;
     },
-    sortOffers: (state, action: PayloadAction<string>) => {
+    filterOffers: (state, action: PayloadAction<string>) => {
       state.offers = state.offers.filter((offer) => offer.city.name === action.payload);
     },
+    updateOffers: (state, action: PayloadAction<OfferCard[]>) => {
+      state.offers = action.payload;
+    }
   },
 });
 
-export const { changeCity, sortOffers } = offersSlice.actions;
+export const { changeCity, filterOffers, updateOffers } = offersSlice.actions;
 
 export default offersSlice.reducer;

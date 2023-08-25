@@ -8,7 +8,6 @@ import { OfferReview } from '../../mocks/reviews';
 import { useParams } from 'react-router-dom';
 import CitiesList from '../../components/places-list/places-list';
 
-
 type OfferLoggedProps = {
   offers: OfferCard[];
   reviews: OfferReview[];
@@ -159,7 +158,7 @@ function OfferLogged({offers, reviews}: OfferLoggedProps): JSX.Element {
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              <CitiesList offers={offers} selectedPlace={currentOffer}/>
+              <CitiesList selectedPlace={currentOffer}/>
             </div>
           </section>
         </div>
