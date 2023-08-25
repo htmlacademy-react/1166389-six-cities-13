@@ -1,4 +1,4 @@
-import CitiesItem from '../locations-item/locations-item';
+import CitiesItem from '../cities-item/cities-item';
 import { CITIES } from '../../const/const';
 
 function CitiesList(): JSX.Element{
