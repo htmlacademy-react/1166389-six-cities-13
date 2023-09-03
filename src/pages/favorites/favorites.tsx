@@ -1,12 +1,10 @@
+import { useSelector } from 'react-redux';
 import FavoritesCard from '../../components/favorites-card/favorites-card';
 import Header from '../../components/header/header';
-import { OfferCard } from '../../mocks/offers';
+import { RootState } from '../../store';
 
-type MainProps = {
-  offers: OfferCard[];
-}
-
-function Favorites({ offers }: MainProps): JSX.Element {
+function Favorites(): JSX.Element {
+  const offers = useSelector(((store: RootState) => store.offersSlice.offers));
   const favoriteOffers = offers.filter((offer) => offer.isFavorite);
 
   return (

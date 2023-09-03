@@ -3,18 +3,19 @@ import OfferCommentForm from '../../components/offer-comment-form/offer-comment-
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import Map from '../../components/map/map';
 import ErrorPage from '../../pages/error/error';
-import { OfferCard } from '../../mocks/offers';
 import { OfferReview } from '../../mocks/reviews';
 import { useParams } from 'react-router-dom';
 import CitiesList from '../../components/places-list/places-list';
+import { RootState } from '../../store';
+import { useSelector } from 'react-redux';
 
 type OfferLoggedProps = {
-  offers: OfferCard[];
   reviews: OfferReview[];
 }
 
-function OfferLogged({offers, reviews}: OfferLoggedProps): JSX.Element {
+function OfferLogged({reviews}: OfferLoggedProps): JSX.Element {
   const {id}: {id?: string} = useParams();
+  const offers = useSelector(((store: RootState) => store.offersSlice.offers));
   const currentOffer = offers.find((offer) => offer.id === id);
 
   if (!currentOffer) {

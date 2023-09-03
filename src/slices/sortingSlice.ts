@@ -1,18 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { OfferCard, mockOffers } from '../mocks/offers';
+import { OfferCard } from '../mocks/offers';
 
 export type InitialStateType = {
   offers: OfferCard[];
 };
 
 const initialState: InitialStateType = {
-  offers: mockOffers,
+  offers: [],
 };
 
 const sortingSlice = createSlice({
   name: 'sorting',
   initialState,
   reducers: {
+    sortByDefault: (state) => {
+      state.offers = initialState.offers;
+    },
     sortByPriceHighToLow: (state) => {
       state.offers = state.offers.sort((a, b) => b.price - a.price);
     },
@@ -25,6 +28,6 @@ const sortingSlice = createSlice({
   }
 });
 
-export const { sortByPriceHighToLow, sortByPriceLowToHigh, sortByTopRated } = sortingSlice.actions;
+export const { sortByDefault, sortByPriceHighToLow, sortByPriceLowToHigh, sortByTopRated } = sortingSlice.actions;
 
 export default sortingSlice.reducer;

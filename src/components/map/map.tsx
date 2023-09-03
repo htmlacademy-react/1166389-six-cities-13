@@ -1,4 +1,4 @@
-import {useRef, useEffect} from 'react';
+import { useRef, useEffect} from 'react';
 import {Icon, Marker, layerGroup} from 'leaflet';
 import useMap from '../../hooks/use-map';
 import { OfferCard, CityLocation } from '../../mocks/offers';
@@ -34,9 +34,11 @@ function Map(props: MapProps): JSX.Element {
 
   const mapRef = useRef(null);
   const map = useMap({mapRef, city});
+  const {latitude: cityLatitude, longitude: cityLongitude, zoom} = city.location;
 
   useEffect(() => {
     if (map) {
+      map.flyTo([cityLatitude, cityLongitude], zoom);
       const markerLayer = layerGroup().addTo(map);
       offers.forEach(({location, id}) => {
         const marker = new Marker({
@@ -57,7 +59,7 @@ function Map(props: MapProps): JSX.Element {
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, offers, selectedPlace]);
+  }, [map, offers, selectedPlace, cityLongitude, cityLatitude, zoom]);
 
   return <div style={getMapStyle()} ref={mapRef}></div>;
 }
