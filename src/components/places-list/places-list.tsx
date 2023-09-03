@@ -1,9 +1,9 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { OfferCard } from '../../mocks/offers';
 import PlacesCard from '../places-card/places-card';
-import { RootState } from '../../slices/store';
-import { useEffect } from 'react';
-import { updateOffers } from '../../slices/offersSlice';
+import { RootState } from '../../store';
+
+import Spinner from '../spinner/spinner';
 
 type PlacesListProps = {
   selectedPlace?: OfferCard;
@@ -13,7 +13,13 @@ type PlacesListProps = {
 
 function PlacesList({onListCardHover, onListCardMouseOut, selectedPlace}: PlacesListProps): JSX.Element {
   const selectedCity = useSelector(((state: RootState) => state.offersSlice.city));
-  const offers = useSelector(((state: RootState) => state.sortingSlice.offers));
+  const offers = useSelector(((state: RootState) => state.offersSlice.offers));
+  const isOffersLoading = useSelector(((state: RootState) => state.offersSlice.loading));
+
+  if (isOffersLoading) {
+    return <Spinner />;
+  }
+
   let nearPlaces: OfferCard[] = [];
 
   if (selectedPlace) {
@@ -21,12 +27,6 @@ function PlacesList({onListCardHover, onListCardMouseOut, selectedPlace}: Places
   }
 
   const filteredOffers = selectedCity ? offers.filter((offer) => offer.city.name === selectedCity) : offers;
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(updateOffers(offers));
-  }, [dispatch, offers]);
 
   return (
     <>

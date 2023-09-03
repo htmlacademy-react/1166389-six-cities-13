@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {changeCity} from '../../slices/offersSlice.ts';
-import { RootState } from '../../slices/store.ts';
+import { RootState } from '../../store/index.ts';
 
 type CitiesItemProps = {
   city: string;

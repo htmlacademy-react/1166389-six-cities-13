@@ -8,21 +8,19 @@ import Login from '../../pages/login/login';
 import Offer from '../../pages/offer/offer';
 import {AppRoute, AuthorizationStatus} from '../../const/const';
 import PrivateRoute from '../private-route/private-route';
-import { OfferCard } from '../../mocks/offers';
 import { OfferReview } from '../../mocks/reviews';
 
 type AppProps = {
-  offers: OfferCard[];
   reviews: OfferReview[];
 }
 
-function App({offers, reviews}: AppProps) {
+function App({ reviews}: AppProps) {
   return (
     <Router>
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<Main offers={offers} />}
+          element={<Main />}
         />
         <Route
           path={AppRoute.Login}
@@ -32,14 +30,14 @@ function App({offers, reviews}: AppProps) {
           path={AppRoute.Favorites}
           element={
             <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-              <Favorites offers={offers} />
+              <Favorites />
             </PrivateRoute>
           }
         />
         <Route
           path={AppRoute.Offer}
           element={
-            <Offer offers={offers} reviews={reviews} />
+            <Offer reviews={reviews} />
           }
         />
         <Route
