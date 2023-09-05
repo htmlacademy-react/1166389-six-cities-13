@@ -19,5 +19,13 @@ export enum AppRoute {
 
 export enum AuthorizationStatus {
     Auth = 'authorized',
-    NoAuth = 'non-authorized'
+    NoAuth = 'non-authorized',
+    Unknown = 'unknown',
+}
+
+export enum APIRoute {
+  Offers = '/offers',
+  Comments = '/comments',
+  Login = '/login',
+  Logout = '/logout',
 }
