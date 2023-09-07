@@ -2,14 +2,13 @@ import { PayloadAction, createAction, createAsyncThunk, createSlice } from '@red
 import { AuthorizationStatus } from '../const/const';
 import { AuthData, UserData } from '../types/types';
 import { saveToken } from '../services/token';
-import { store, AppDispatch } from '../store/index.js';
+import { AppDispatch } from '../store/index.js';
 import { AxiosInstance } from 'axios';
+import { RootState } from '../store/index';
 
 export type InitialStateType = {
   authorizationStatus: string;
 };
-
-export type State = ReturnType<typeof store.getState>;
 
 const initialState: InitialStateType = {
   authorizationStatus: AuthorizationStatus.Unknown,
@@ -22,7 +21,7 @@ void,
 undefined,
 {
   dispatch: AppDispatch;
-  state: State;
+  state: RootState;
   extra: AxiosInstance;
 }
 >('user/checkAuth', async(_arg, { dispatch, extra: api }) => {
@@ -39,7 +38,7 @@ void,
 AuthData,
 {
   dispatch: AppDispatch;
-  state: State;
+  state: RootState;
   extra: AxiosInstance;
 }
 >(

@@ -1,11 +1,11 @@
+import { useSelector } from 'react-redux';
 import { OfferReview } from '../../mocks/reviews';
 import ReviewsItem from '../reviews-item/reviews-item';
+import { RootState } from '../../store';
 
-type ReviewsListProps = {
-  reviews: OfferReview[];
-}
+function ReviewsList(): JSX.Element{
+  const reviews = useSelector(((store: RootState) => store.commentsSlice.comments));
 
-function ReviewsList({ reviews }: ReviewsListProps): JSX.Element{
   return (
     <ul className="reviews__list">
       {reviews.map(

@@ -1,14 +1,26 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Header from '../../components/header/header';
 import { login } from '../../slices/authSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AuthData } from '../../types/types';
+import { useNavigate } from 'react-router-dom';
+import { RootState } from '../../store';
+import { AuthorizationStatus } from '../../const/const';
 
 function Login(): JSX.Element {
+  const navigate = useNavigate();
+  const authorizationStatus = useSelector(((store: RootState) => store.authSlice.authorizationStatus));
+
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      navigate('/');
+    }
+  }, [authorizationStatus, navigate]);
 
   const onSubmit = (userData: AuthData) => {
     dispatch(login(userData));

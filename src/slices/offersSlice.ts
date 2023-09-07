@@ -1,26 +1,28 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { OfferCard } from '../mocks/offers';
 import { AxiosInstance } from 'axios';
-import { store } from '../store/index.js';
+import { RootState } from '../store/index';
 
 export type InitialStateType = {
   city: string;
   offers: OfferCard[];
+  nearbyOffers: OfferCard[];
+  initialOffers: OfferCard[];
   isSuccess: boolean;
   loading: boolean;
 };
 
-export type State = ReturnType<typeof store.getState>;
-
 export type ThunkConfig<T> = {
   rejectValue: T;
   extra: AxiosInstance;
-  state: State;
+  state: RootState;
 }
 
 const initialState: InitialStateType = {
   city: 'Paris',
   offers: [],
+  initialOffers: [],
+  nearbyOffers: [],
   isSuccess: false,
   loading: false,
 };
@@ -29,15 +31,35 @@ export const fetchOffers = createAsyncThunk<
 OfferCard[],
 undefined,
 ThunkConfig<string>
->('offers/fetchOffers', async(_arg, { extra: api, rejectWithValue }) => {
-  try {
-    const response = await api.get<OfferCard[]>('/offers');
-    return response.data;
+>(
+  'offers/fetchOffers',
+  async(_arg, { extra: api, rejectWithValue }) => {
+    try {
+      const response = await api.get<OfferCard[]>('/offers');
+      return response.data;
 
-  } catch (err) {
-    return rejectWithValue('error');
+    } catch (err) {
+      return rejectWithValue('error');
+    }
+  });
+
+export const fetchNearbyOffers = createAsyncThunk<
+  OfferCard[],
+  string,
+  {
+    extra: AxiosInstance;
+    state: RootState;
   }
-});
+  >(
+    'offers/fetchNearbyOffers',
+    async(offerId, { extra: api, rejectWithValue}) => {
+      try {
+        const response = await api.get<OfferCard[]>(`/offers/${offerId}/nearby`);
+        return response.data;
+      } catch (err) {
+        return rejectWithValue('error');
+      }
+    });
 
 const offersSlice = createSlice({
   name: 'offers',
@@ -57,6 +79,7 @@ const offersSlice = createSlice({
     builder
       .addCase(fetchOffers.fulfilled, (state, action: PayloadAction<OfferCard[]>) => {
         state.offers = action.payload;
+        state.initialOffers = action.payload;
         state.loading = false;
         state.isSuccess = true;
       })
@@ -67,6 +90,9 @@ const offersSlice = createSlice({
       .addCase(fetchOffers.rejected, (state) => {
         state.loading = false;
         state.isSuccess = false;
+      })
+      .addCase(fetchNearbyOffers.fulfilled, (state, action: PayloadAction<OfferCard[]>) => {
+        state.nearbyOffers = action.payload;
       });
   }
 });

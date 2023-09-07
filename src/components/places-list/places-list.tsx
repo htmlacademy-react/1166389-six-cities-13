@@ -15,22 +15,17 @@ function PlacesList({onListCardHover, onListCardMouseOut, selectedPlace}: Places
   const selectedCity = useSelector(((state: RootState) => state.offersSlice.city));
   const offers = useSelector(((state: RootState) => state.offersSlice.offers));
   const isOffersLoading = useSelector(((state: RootState) => state.offersSlice.loading));
+  const nearbyOffers = useSelector(((store: RootState) => store.offersSlice.nearbyOffers));
 
   if (isOffersLoading) {
     return <Spinner />;
-  }
-
-  let nearPlaces: OfferCard[] = [];
-
-  if (selectedPlace) {
-    nearPlaces = offers.filter((offer) => offer.id !== selectedPlace.id);
   }
 
   const filteredOffers = selectedCity ? offers.filter((offer) => offer.city.name === selectedCity) : offers;
 
   return (
     <>
-      {(selectedPlace ? nearPlaces : filteredOffers).map(
+      {(selectedPlace ? nearbyOffers.slice(0, 3) : filteredOffers).map(
         (offer) =>
           (
             <PlacesCard

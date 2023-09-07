@@ -1,31 +1,49 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { sortByDefault, sortByPriceHighToLow, sortByPriceLowToHigh, sortByTopRated } from '../../slices/sortingSlice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { RootState } from '../../store';
+import { updateOffers } from '../../slices/offersSlice';
 
 function OffersSorting(): JSX.Element {
   const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<string>('');
+  const [initialLoad, setInitialLoad] = useState(true);
+  const getOffers = useSelector(((store: RootState) => store.offersSlice.offers));
+  const initialOffers = useSelector(((store: RootState) => store.offersSlice.initialOffers));
+  const sortedOffers = useSelector((state: RootState) => state.sortingSlice.offers);
+  const offers = [...getOffers];
+
+  useEffect(() => {
+    if (!initialLoad) {
+      dispatch(updateOffers(sortedOffers));
+    }
+  }, [sortedOffers, dispatch, initialLoad]);
 
   const handleSortChange: React.MouseEventHandler<HTMLLIElement> = (event) => {
     const selectedSort = (event.target as HTMLElement).innerText;
     setSelectedOption(selectedSort);
     switch (selectedSort) {
       case 'Popular':
-        dispatch(sortByDefault());
+        dispatch(sortByDefault(initialOffers));
         break;
       case 'Price: low to high':
-        dispatch(sortByPriceLowToHigh());
+        dispatch(sortByPriceLowToHigh(offers));
+        setInitialLoad(false);
         break;
       case 'Price: high to low':
-        dispatch(sortByPriceHighToLow());
+        dispatch(sortByPriceHighToLow(offers));
+        setInitialLoad(false);
         break;
       case 'Top rated first':
-        dispatch(sortByTopRated());
+        dispatch(sortByTopRated(offers));
+        setInitialLoad(false);
         break;
       default:
         break;
     }
+
+    //setInitialLoad(false);
   };
 
   const toggleHovered = () => setIsHovered(!isHovered);
