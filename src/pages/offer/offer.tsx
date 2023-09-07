@@ -7,7 +7,12 @@ import { OfferReview } from '../../mocks/reviews';
 import { useParams } from 'react-router-dom';
 import CitiesList from '../../components/places-list/places-list';
 import { RootState } from '../../store';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchComments } from '../../slices/commentsSlice';
+import { fetchNearbyOffers } from '../../slices/offersSlice';
+import { AuthorizationStatus } from '../../const/const';
+import { setRating } from '../../utils';
 
 type OfferLoggedProps = {
   reviews: OfferReview[];
@@ -17,10 +22,20 @@ function OfferLogged({reviews}: OfferLoggedProps): JSX.Element {
   const {id}: {id?: string} = useParams();
   const offers = useSelector(((store: RootState) => store.offersSlice.offers));
   const currentOffer = offers.find((offer) => offer.id === id);
+  const authorizationStatus = useSelector(((store: RootState) => store.authSlice.authorizationStatus));
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchComments(id));
+    dispatch(fetchNearbyOffers(id));
+  }, [dispatch, id]);
 
   if (!currentOffer) {
     return <ErrorPage />;
   }
+
+  const { title, price, isFavorite, isPremium, rating } = currentOffer;
 
   return (
     <div className="page">
@@ -51,15 +66,27 @@ function OfferLogged({reviews}: OfferLoggedProps): JSX.Element {
           </div>
           <div className="offer__container container">
             <div className="offer__wrapper">
-              <div className="offer__mark">
-                <span>Premium</span>
-              </div>
+              {isPremium &&
+                  <div className="offer__mark">
+                    <span>Premium</span>
+                  </div>}
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">
-                  Beautiful &amp; luxurious studio at great location
+                  {title}
                 </h1>
-                <button className="offer__bookmark-button button" type="button">
-                  <svg className="offer__bookmark-icon" width="31" height="33">
+                <button
+                  className={`
+                      offer__bookmark-button
+                      ${isFavorite ? 'offer__bookmark-button--active' : ''}
+                      button
+                      `}
+                  type="button"
+                >
+                  <svg
+                    className="offer__bookmark-icon"
+                    width="31"
+                    height="33"
+                  >
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
                   <span className="visually-hidden">To bookmarks</span>
@@ -67,10 +94,10 @@ function OfferLogged({reviews}: OfferLoggedProps): JSX.Element {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{width: '100%'}}></span>
+                  <span style={{width: setRating(rating)}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="offer__rating-value rating__value">4.8</span>
+                <span className="offer__rating-value rating__value">{rating}</span>
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
@@ -84,7 +111,7 @@ function OfferLogged({reviews}: OfferLoggedProps): JSX.Element {
                 </li>
               </ul>
               <div className="offer__price">
-                <b className="offer__price-value">&euro;120</b>
+                <b className="offer__price-value">&euro;{price}</b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
               <div className="offer__inside">
@@ -146,8 +173,8 @@ function OfferLogged({reviews}: OfferLoggedProps): JSX.Element {
               </div>
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
-                <ReviewsList reviews={reviews} />
-                <OfferCommentForm />
+                <ReviewsList />
+                {authorizationStatus === AuthorizationStatus.Auth && <OfferCommentForm />}
               </section>
             </div>
           </div>

@@ -4,12 +4,9 @@ import Error from '../../pages/error/error';
 import Favorites from '../../pages/favorites/favorites';
 import Login from '../../pages/login/login';
 import Offer from '../../pages/offer/offer';
-import { AppRoute, AuthorizationStatus } from '../../const/const';
+import { AppRoute } from '../../const/const';
 import PrivateRoute from '../private-route/private-route';
 import { OfferReview } from '../../mocks/reviews';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
-import Spinner from '../spinner/spinner';
 import browserHistory from '../../browser-history/browser-history';
 import HistoryRouter from '../history-route/history-route';
 
@@ -18,11 +15,6 @@ type AppProps = {
 }
 
 function App({ reviews}: AppProps) {
-  const authorizationStatus = useSelector(((store: RootState) => store.authSlice.authorizationStatus));
-
-  if (authorizationStatus !== AuthorizationStatus.Unknown) {
-    return <Spinner />;
-  }
 
   return (
     <HistoryRouter history={browserHistory}>
