@@ -1,10 +1,11 @@
 import { PayloadAction, createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { AuthorizationStatus } from '../const/const';
-import { AuthData, UserData } from '../types/types';
-import { saveToken } from '../services/token';
-import { AppDispatch } from '../store/index.js';
+import { AppRoute, AuthorizationStatus } from '../../const/const.ts';
+import { AuthData, UserData } from '../../types/types.ts';
+import { saveToken } from '../../services/token.ts';
+import { AppDispatch } from '../index.js';
 import { AxiosInstance } from 'axios';
-import { RootState } from '../store/index';
+import { RootState } from '../../types/state';
+import { NameSpace } from '../../const/const.ts';
 
 export type InitialStateType = {
   authorizationStatus: string;
@@ -15,6 +16,7 @@ const initialState: InitialStateType = {
 };
 
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
+export const redirectToRoute = createAction('app/redirectToRoute', (route: string) => ({payload: route}));
 
 export const checkAuth = createAsyncThunk<
 void,
@@ -25,12 +27,8 @@ undefined,
   extra: AxiosInstance;
 }
 >('user/checkAuth', async(_arg, { dispatch, extra: api }) => {
-  try {
-    await api.get<UserData>('/login');
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
-  } catch {
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
-  }
+  await api.get<UserData>(AppRoute.Login);
+  dispatch(requireAuthorization(AuthorizationStatus.Auth));
 });
 
 export const login = createAsyncThunk<
@@ -43,16 +41,17 @@ AuthData,
 }
 >(
   'user/login',
-  async({ login: email, password }, {extra: api }) => {
+  async({ login: email, password }, { dispatch, extra: api }) => {
     const {
       data: {token}
-    } = await api.post<UserData>('/login', { email, password });
+    } = await api.post<UserData>(AppRoute.Login, { email, password });
     saveToken(token);
+    dispatch(redirectToRoute(AppRoute.Main));
   }
 );
 
-const authSlice = createSlice({
-  name: 'Authentication',
+export const authSlice = createSlice({
+  name: NameSpace.Auth,
   initialState,
   reducers: {
     authentication: (state, action: PayloadAction<string>) => {
@@ -74,5 +73,3 @@ const authSlice = createSlice({
 });
 
 export const { authentication } = authSlice.actions;
-
-export default authSlice.reducer;

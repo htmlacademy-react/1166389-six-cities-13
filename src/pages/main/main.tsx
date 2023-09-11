@@ -6,13 +6,13 @@ import CitiesList from '../../components/places-list/places-list';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import OffersSorting from '../../components/offers-sorting/offers-sorting';
-import { RootState } from '../../store';
-import { fetchOffers } from '../../slices/offersSlice';
+import { fetchOffers } from '../../store/offers/slice';
+import { getOffers, getSelectedCity } from '../../store/offers/selectors';
 
 function Main(): JSX.Element {
   const [selectedCard, setActiveCard] = useState<OfferCard | null>(null);
-  const activeCity = useSelector(((store: RootState) => store.offersSlice.city));
-  const offers = useSelector(((store: RootState) => store.offersSlice.offers));
+  const activeCity = useSelector(getSelectedCity);
+  const offers = useSelector(getOffers);
   const offersForCity = offers.filter((offer) => offer.city.name === activeCity);
 
   const handleListCardHover = (offer: OfferCard) => {

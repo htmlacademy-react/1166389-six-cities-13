@@ -1,14 +1,14 @@
 import {Link} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
-import {changeCity} from '../../slices/offersSlice.ts';
-import { RootState } from '../../store/index.ts';
+import {changeCity} from '../../store/offers/slice.ts';
+import { getSelectedCity } from '../../store/offers/selectors.ts';
 
 type CitiesItemProps = {
   city: string;
 }
 
 function CitiesItem({city}: CitiesItemProps): JSX.Element{
-  const activeCity = useSelector(((store: RootState) => store.offersSlice.city));
+  const activeCity = useSelector(getSelectedCity);
   const dispatch = useDispatch();
 
   return (

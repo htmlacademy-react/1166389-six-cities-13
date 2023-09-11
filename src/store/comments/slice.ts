@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import { RootState } from '../store/index';
-import { OfferReview } from '../mocks/reviews';
+import { RootState } from '../../types/state';
+import { OfferReview } from '../../mocks/reviews.tsx';
+import { NameSpace } from '../../const/const.ts';
 
 export type initialStateType = {
   comments: OfferReview[];
@@ -57,9 +58,9 @@ CommentWithId,
     }
   });
 
-const commentsSlice = createSlice(
+export const commentsSlice = createSlice(
   {
-    name: 'comments',
+    name: NameSpace.Comments,
     initialState,
     reducers: {},
     extraReducers(builder) {
@@ -74,5 +75,3 @@ const commentsSlice = createSlice(
     }
   }
 );
-
-export default commentsSlice.reducer;
