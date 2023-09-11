@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { OfferCard } from '../mocks/offers';
+import { OfferCard } from '../../mocks/offers.tsx';
 import { AxiosInstance } from 'axios';
-import { RootState } from '../store/index';
+import { RootState } from '../../types/state';
+import { APIRoute, NameSpace } from '../../const/const.ts';
 
 export type InitialStateType = {
   city: string;
@@ -35,7 +36,7 @@ ThunkConfig<string>
   'offers/fetchOffers',
   async(_arg, { extra: api, rejectWithValue }) => {
     try {
-      const response = await api.get<OfferCard[]>('/offers');
+      const response = await api.get<OfferCard[]>(APIRoute.Offers);
       return response.data;
 
     } catch (err) {
@@ -61,8 +62,8 @@ export const fetchNearbyOffers = createAsyncThunk<
       }
     });
 
-const offersSlice = createSlice({
-  name: 'offers',
+export const offersSlice = createSlice({
+  name: NameSpace.Offers,
   initialState,
   reducers: {
     changeCity: (state, action: PayloadAction<string>) => {
@@ -99,4 +100,3 @@ const offersSlice = createSlice({
 
 export const { changeCity, filterOffers, updateOffers } = offersSlice.actions;
 
-export default offersSlice.reducer;

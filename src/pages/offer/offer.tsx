@@ -6,13 +6,14 @@ import ErrorPage from '../../pages/error/error';
 import { OfferReview } from '../../mocks/reviews';
 import { useParams } from 'react-router-dom';
 import CitiesList from '../../components/places-list/places-list';
-import { RootState } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { fetchComments } from '../../slices/commentsSlice';
-import { fetchNearbyOffers } from '../../slices/offersSlice';
+import { fetchComments } from '../../store/comments/slice';
+import { fetchNearbyOffers } from '../../store/offers/slice';
 import { AuthorizationStatus } from '../../const/const';
 import { setRating } from '../../utils';
+import { getOffers, getOffersById } from '../../store/offers/selectors';
+import { getAuthorizationStatus } from '../../store/auth/selectors';
 
 type OfferLoggedProps = {
   reviews: OfferReview[];
@@ -20,9 +21,9 @@ type OfferLoggedProps = {
 
 function OfferLogged({reviews}: OfferLoggedProps): JSX.Element {
   const {id}: {id?: string} = useParams();
-  const offers = useSelector(((store: RootState) => store.offersSlice.offers));
-  const currentOffer = offers.find((offer) => offer.id === id);
-  const authorizationStatus = useSelector(((store: RootState) => store.authSlice.authorizationStatus));
+  const offers = useSelector(getOffers);
+  const currentOffer = useSelector(getOffersById(id));
+  const authorizationStatus = useSelector(getAuthorizationStatus);
 
   const dispatch = useDispatch();
 

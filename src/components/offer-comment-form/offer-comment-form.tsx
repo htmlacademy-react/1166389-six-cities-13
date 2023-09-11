@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { OfferComment, fetchComments, postComment } from '../../slices/commentsSlice';
+import { OfferComment, fetchComments, postComment } from '../../store/comments/slice';
 import { useParams } from 'react-router-dom';
 
 function OfferCommentForm(): JSX.Element{

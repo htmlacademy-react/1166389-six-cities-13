@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { OfferCard } from '../mocks/offers';
+import { OfferCard } from '../../mocks/offers.tsx';
+import { NameSpace } from '../../const/const.ts';
 
 export type InitialStateType = {
   offers: OfferCard[];
@@ -9,8 +10,8 @@ const initialState: InitialStateType = {
   offers: [],
 };
 
-const sortingSlice = createSlice({
-  name: 'sorting',
+export const sortingSlice = createSlice({
+  name: NameSpace.Sorting,
   initialState,
   reducers: {
     sortByDefault: (state, action: PayloadAction<OfferCard[]>) => {
@@ -29,5 +30,3 @@ const sortingSlice = createSlice({
 });
 
 export const { sortByDefault, sortByPriceHighToLow, sortByPriceLowToHigh, sortByTopRated } = sortingSlice.actions;
-
-export default sortingSlice.reducer;
