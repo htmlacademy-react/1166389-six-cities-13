@@ -1,28 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit';
-import offersSlice from '../slices/offersSlice';
-import sortingSlice from '../slices/sortingSlice';
-import authSlice from '../slices/authSlice';
 import { createApi } from '../services/api.ts';
-import commentsSlice from '../slices/commentsSlice.ts';
+import { rootReducer } from './root-reducer.ts';
+import { redirect } from './middlewares/redirect';
 
-export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 const api = createApi();
 
 export const store = configureStore({
-  reducer: {
-    offersSlice,
-    sortingSlice,
-    authSlice,
-    commentsSlice,
-  },
+  reducer: rootReducer,
 
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     thunk: {
       extraArgument: api,
     }
-  }),
+  }).concat(redirect),
 });
 
 

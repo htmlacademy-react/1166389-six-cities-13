@@ -1,18 +1,22 @@
-import Header from '../../components/header/header';
+import { MemoizedHeader } from '../../components/header/header';
 import Map from '../../components/map/map';
 import LocationsList from '../../components/cities-list/cities-list';
 import { OfferCard } from '../../mocks/offers';
 import CitiesList from '../../components/places-list/places-list';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import OffersSorting from '../../components/offers-sorting/offers-sorting';
-import { RootState } from '../../store';
-import { fetchOffers } from '../../slices/offersSlice';
+import { fetchOffers } from '../../store/offers/slice';
+import { getOffers, getSelectedCity, getOffersLoadingStatus } from '../../store/offers/selectors';
+import OffersEmpty from '../../components/offers-empty/offers-empty';
+import Spinner from '../../components/spinner/spinner';
+import { useAppDispatch } from '../../hooks/use-app-dispatch';
 
 function Main(): JSX.Element {
   const [selectedCard, setActiveCard] = useState<OfferCard | null>(null);
-  const activeCity = useSelector(((store: RootState) => store.offersSlice.city));
-  const offers = useSelector(((store: RootState) => store.offersSlice.offers));
+  const activeCity = useSelector(getSelectedCity);
+  const offers = useSelector(getOffers);
+  const offersLoadingStatus = useSelector(getOffersLoadingStatus);
   const offersForCity = offers.filter((offer) => offer.city.name === activeCity);
 
   const handleListCardHover = (offer: OfferCard) => {
@@ -23,7 +27,7 @@ function Main(): JSX.Element {
     setActiveCard(null);
   };
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchOffers());
@@ -33,17 +37,6 @@ function Main(): JSX.Element {
   const locationForMap = offersForCity[0]?.city;
 
   const isOffersEmpty = offers.length === 0;
-
-  const noPlacesFound = (
-    <div className="cities__places-container container">
-      <section className="cities__places places">
-        <h2 className="visually-hidden">Places</h2>
-        <b className="places__found">
-          {offers.length} places to stay in {activeCity}
-        </b>
-      </section>
-    </div>
-  );
 
   const offersContainer = (
     <div className="cities__places-container container">
@@ -63,17 +56,37 @@ function Main(): JSX.Element {
     </div>
   );
 
+  if (offersLoadingStatus) {
+    return (
+      <div className="page page--gray page--main">
+        <MemoizedHeader />
+
+        <main className={`page__main page__main--index ${isOffersEmpty ? 'page__main--index-empty' : ''}`}>
+          <h1 className="visually-hidden">Cities</h1>
+          <div className="tabs">
+            <LocationsList />
+          </div>
+          <div className="cities">
+            <div className="cities__places-container container">
+              <Spinner />
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="page page--gray page--main">
-      <Header />
+      <MemoizedHeader />
 
-      <main className="page__main page__main--index">
+      <main className={`page__main page__main--index ${isOffersEmpty ? 'page__main--index-empty' : ''}`} data-testid="main-page-element">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <LocationsList />
         </div>
         <div className="cities">
-          {isOffersEmpty ? noPlacesFound : offersContainer}
+          {isOffersEmpty ? <OffersEmpty /> : offersContainer}
         </div>
       </main>
     </div>

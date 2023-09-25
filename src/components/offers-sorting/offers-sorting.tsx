@@ -1,18 +1,18 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { sortByDefault, sortByPriceHighToLow, sortByPriceLowToHigh, sortByTopRated } from '../../slices/sortingSlice';
+import { sortByDefault, sortByPriceHighToLow, sortByPriceLowToHigh, sortByTopRated } from '../../store/sorting/slice';
 import { useEffect, useState } from 'react';
-import { RootState } from '../../store';
-import { updateOffers } from '../../slices/offersSlice';
+import { updateOffers } from '../../store/offers/slice';
+import { getInitialOffers, getOffers } from '../../store/offers/selectors';
+import { getSortedOffers } from '../../store/sorting/selectors';
 
 function OffersSorting(): JSX.Element {
   const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [initialLoad, setInitialLoad] = useState(true);
-  const getOffers = useSelector(((store: RootState) => store.offersSlice.offers));
-  const initialOffers = useSelector(((store: RootState) => store.offersSlice.initialOffers));
-  const sortedOffers = useSelector((state: RootState) => state.sortingSlice.offers);
-  const offers = [...getOffers];
+  const offers = [...useSelector(getOffers)];
+  const initialOffers = useSelector(getInitialOffers);
+  const sortedOffers = useSelector(getSortedOffers);
 
   useEffect(() => {
     if (!initialLoad) {
@@ -49,7 +49,7 @@ function OffersSorting(): JSX.Element {
   const toggleHovered = () => setIsHovered(!isHovered);
 
   return (
-    <form className="places__sorting" action="#" method="get" onMouseEnter={toggleHovered} onMouseLeave={toggleHovered}>
+    <form className="places__sorting" action="#" method="get" onMouseEnter={toggleHovered} onMouseLeave={toggleHovered} data-testid="offers-sorting-element">
       <span className="places__sorting-caption">Sort by</span>
       <span className="places__sorting-type" tabIndex={0}>
                   Popular

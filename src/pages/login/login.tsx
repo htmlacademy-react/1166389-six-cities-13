@@ -1,26 +1,14 @@
-import { useEffect, useRef } from 'react';
-import Header from '../../components/header/header';
-import { login } from '../../slices/authSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useRef } from 'react';
+import { MemoizedHeader } from '../../components/header/header';
+import { login } from '../../store/auth/slice';
 import { AuthData } from '../../types/types';
-import { useNavigate } from 'react-router-dom';
-import { RootState } from '../../store';
-import { AuthorizationStatus } from '../../const/const';
+import { useAppDispatch } from '../../hooks/use-app-dispatch';
 
 function Login(): JSX.Element {
-  const navigate = useNavigate();
-  const authorizationStatus = useSelector(((store: RootState) => store.authSlice.authorizationStatus));
-
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (authorizationStatus === AuthorizationStatus.Auth) {
-      navigate('/');
-    }
-  }, [authorizationStatus, navigate]);
+  const dispatch = useAppDispatch();
 
   const onSubmit = (userData: AuthData) => {
     dispatch(login(userData));
@@ -39,8 +27,8 @@ function Login(): JSX.Element {
 
   return (
     <div className="page page--gray page--login">
-      <Header />
-      <main className="page__main page__main--login">
+      <MemoizedHeader />
+      <main className="page__main page__main--login" data-testid="login-page-element">
         <div className="page__login-container container">
           <section className="login">
             <h1 className="login__title">Sign in</h1>

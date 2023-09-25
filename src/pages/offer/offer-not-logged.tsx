@@ -1,9 +1,9 @@
-import Header from '../../components/header/header';
+import { MemoizedHeader } from '../../components/header/header';
 
 function OfferNotLogged(): JSX.Element {
   return (
     <div className="page">
-      <Header />
+      <MemoizedHeader />
 
       <main className="page__main page__main--offer">
         <section className="offer">

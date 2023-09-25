@@ -1,3 +1,6 @@
+import { name, image, datatype, helpers } from 'faker';
+import { OfferType, City } from '../const/const';
+
 export type PlaceLocation = {
   latitude: number;
   longitude: number;
@@ -25,6 +28,46 @@ export type OfferCard = {
     rating: number;
     previewImage: string;
 };
+
+export type HostInfo = {
+  name: string;
+  avatarUrl: string;
+  isPro: boolean;
+}
+
+export type ChosenOffer = Omit<OfferCard, 'previewImage'> & {
+  description: string;
+  bedrooms: number;
+  goods: string[];
+  host: HostInfo;
+  images: string[];
+  maxAdults: number;
+};
+
+export const makeMockOffer = (): OfferCard[] => ([{
+  id: crypto.randomUUID(),
+  title: name.title(),
+  type: helpers.randomize(Object.values(OfferType).map((type) => type)),
+  price: datatype.number({ precision: 1 }),
+  city: {
+    name: helpers.randomize(Object.values(City).map((item) => item)),
+    location: {
+      latitude: datatype.number(),
+      longitude: datatype.number(),
+      zoom: datatype.number()
+    },
+  },
+  location: {
+    latitude: datatype.number(),
+    longitude: datatype.number(),
+    zoom: datatype.number()
+  },
+  isFavorite: datatype.boolean(),
+  isPremium: datatype.boolean(),
+  rating: datatype.number({ min: 1, max: 5, precision: 1 }),
+  previewImage: image.imageUrl(),
+}]);
+
 
 export const mockOffers: OfferCard[] = [
   {
@@ -102,7 +145,7 @@ export const mockOffers: OfferCard[] = [
     type: 'apartment',
     price: 300,
     city: {
-      name: 'Amsterdam',
+      name: 'Paris',
       location: {
         latitude: 52.377956,
         longitude: 4.897070,

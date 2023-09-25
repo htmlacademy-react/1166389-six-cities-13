@@ -7,17 +7,28 @@ import Offer from '../../pages/offer/offer';
 import { AppRoute } from '../../const/const';
 import PrivateRoute from '../private-route/private-route';
 import { OfferReview } from '../../mocks/reviews';
-import browserHistory from '../../browser-history/browser-history';
-import HistoryRouter from '../history-route/history-route';
+import { checkAuth } from '../../store/auth/slice';
+import { useEffect } from 'react';
+import { useAppDispatch } from '../../hooks/use-app-dispatch';
+import {getToken} from '../../services/token';
+import { HelmetProvider } from 'react-helmet-async';
 
 type AppProps = {
   reviews: OfferReview[];
 }
 
-function App({ reviews}: AppProps) {
+function App({ reviews }: AppProps) {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const token = getToken();
+    if (token) {
+      dispatch(checkAuth());
+    }
+  }, [dispatch]);
 
   return (
-    <HistoryRouter history={browserHistory}>
+    <HelmetProvider>
       <Routes>
         <Route
           path={AppRoute.Main}
@@ -46,7 +57,7 @@ function App({ reviews}: AppProps) {
           element={<Error />}
         />
       </Routes>
-    </HistoryRouter>
+    </HelmetProvider>
   );
 }
 

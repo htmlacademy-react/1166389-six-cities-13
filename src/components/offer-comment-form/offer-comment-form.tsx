@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { OfferComment, fetchComments, postComment } from '../../slices/commentsSlice';
+import { OfferComment, fetchComments, postComment } from '../../store/comments/slice';
 import { useParams } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks/use-app-dispatch';
 
 function OfferCommentForm(): JSX.Element{
   const {id}: {id?: string} = useParams();
@@ -10,7 +10,7 @@ function OfferCommentForm(): JSX.Element{
     comment: '',
   });
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const isFormValid = commentFormData.rating === 0 || commentFormData.comment.length < 50;
 
   const handleRadioChange = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +37,7 @@ function OfferCommentForm(): JSX.Element{
   };
 
   return (
-    <form className="reviews__form form" action="#" method="post" onSubmit={handleSubmit}>
+    <form className="reviews__form form" action="#" method="post" onSubmit={handleSubmit} data-testid="offer-comment-element">
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         <input className="form__rating-input visually-hidden" onChange={handleRadioChange} value="5" name="rating" id="5-stars" type="radio" />
