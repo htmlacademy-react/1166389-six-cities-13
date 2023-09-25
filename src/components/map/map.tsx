@@ -61,7 +61,7 @@ function Map(props: MapProps): JSX.Element {
     }
   }, [map, offers, selectedPlace, cityLongitude, cityLatitude, zoom]);
 
-  return <div style={getMapStyle()} ref={mapRef}></div>;
+  return <div style={getMapStyle()} ref={mapRef} data-testid="map-element"></div>;
 }
 
 export default Map;

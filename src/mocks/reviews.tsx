@@ -1,3 +1,5 @@
+import { datatype, date, lorem, name, image } from 'faker';
+
 export type UserInfo = {
     name: string;
     avatarUrl: string;
@@ -11,6 +13,17 @@ export type OfferReview = {
       date: string;
       comment: string;
   };
+
+export const makeMockReview = (): OfferReview[] => ([{
+  id: crypto.randomUUID(),
+  date: String(date.soon()),
+  user: {
+    name: name.title(),
+    avatarUrl: image.avatar()
+  },
+  comment: lorem.text(),
+  rating: datatype.number({ precision: 1 })
+}]);
 
 export const mockReviews: OfferReview[] = [
   {
